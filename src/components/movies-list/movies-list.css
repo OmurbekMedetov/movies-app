@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+.movies__list {
+    width: 387px;
+    height: 270px;
+    box-shadow: 0 4px 10px 2px #00000026;
+    border: 0.5px solid white;
+    border-radius: 6px; 
+}
+.movies__list--div {
+    width: 387px;
+    height: 270px;
+    margin: 0 0 20px 0;
+}
+.movies__img {
+    width: 60px;
+    height: 91px;
+    margin: 6px 0 10px 10px;
+}
+.movies__h2 {
+    width: 250px;
+    font-size: 20px;
+    line-height: 28px;
+    margin: -107px 0 0 83px;
+}
+.movies__date {
+    width: 83px;
+    height: 22px;
+    font-size: 12px;
+    margin: 0 0 0 83px;
+    vertical-align: middle;
+}
+.movies__button {
+    width: 46px;
+    height: 20px;
+    margin: 8px 12px 0 0;
+}
+.btn {
+    margin-left: 83px;
+}
+.movies__text {
+    width: 300px;
+    margin: 10px 10px 0 80px;
+    font-size: 12px;
+    line-height: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient:vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.rate__movies {
+    position: absolute;
+    margin: 240px 0 0 80px;
+}
+.average__3 {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0 0 350px;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 2px solid yellow;
+    border-radius: 50%;
+}
+.average__5 {
+    margin-left: 350px;
+}
+.average__7 {
+    margin-left: 350px;
+}
+.average__max {
+    margin-left: 350px;
+}
+@media(min-width: 780px) {
+    .movies__list {
+        width: 454px;
+        height: 290px;
+        box-sizing: border-box;
+        margin: 0 37px 35px 0;
+        background: white;
+        box-shadow: 0 4px 10px 2px #00000026;
+        border: 0.5px solid white;
+        border-radius: 6px;
+    }
+    .movies__list--div {
+        width: 454px;
+        height: 290px;
+        box-sizing: border-box;
+        margin: 0 10px 35px 0;
+        background: white;
+    }
+    .movies__list:first-child {
+        margin-top: 19px
+    }
+    .movies__list:nth-child(2) {
+        margin-top: 19px;
+    }
+    .movies__img {
+        width: 183px;
+        height: 290px;
+        margin: 0 268px 0 0;
+        border-radius: 6px 0 0 6px;
+    }
+    .movies__h2 {
+        font-size: 20px;
+        line-height: 28px;
+        margin: -280px 0 0 200px;
+        width: 200px;
+        white-space: pre-wrap;
+    }
+    .movies__date {
+        font-size: 12px;
+        line-height: 22px;
+        width: 83px;
+        height: 22px;
+        display: block;
+        margin: 7px 0 7px 200px;
+    }
+    .movies__button {
+        width: 100%;
+    }
+    .btn {
+        margin-left: 200px;
+    }
+    .movies__text {
+        font-size: 12px;
+        line-height: 20px;
+        width: 228px;
+        margin: 0 0 0 200px;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient:vertical;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .rate__movies {
+        margin: 260px 0 0 200px;
+    }
+    .average__3 {
+        display: inline-flex;
+        width: 30px;
+        height: 30px;
+        border:2px solid #E90000;
+        border-radius: 50%;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        margin: 5px 0 0 420px;
+    }
+    .average__5 {
+        display: inline-flex;
+        width: 30px;
+        height: 30px;
+        border:2px solid #E97E00;
+        border-radius: 50%;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        margin: 5px 0 0 420px;
+    }
+    .average__7 {
+        display: inline-flex;
+        width: 30px;
+        height: 30px;
+        border:2px solid #E9D100;
+        border-radius: 50%;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        margin: 5px 0 0 420px;
+    }
+    .average__max {
+        display: inline-flex;
+        width: 30px;
+        height: 30px;
+        border:2px solid #66E900;
+        border-radius: 50%;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        margin: 5px 0 0 420px;
+    }
+    .anticon-star {
+        font-size: 15px;
+    }
+}
