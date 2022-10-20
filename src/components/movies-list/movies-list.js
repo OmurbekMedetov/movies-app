@@ -7,24 +7,16 @@ import { Online } from 'react-detect-offline';
 import lostImg from './picture.png';
 import RateMovies from './rate-movies';
 import MoviesContext from '../movies-logic/context-movies';
-import { AuthenticationMovies } from '../movies-logic/movies-query';
 
 // eslint-disable-next-line react/prop-types
 export default function MoviesList({ img, rate, text, title, data, id, genresid }) {
   return (
     <MoviesContext.Consumer>
-      {(value, localMovies) => (
+      {(value) => (
         <div className="movies__list--div">
           <Online>
             <div className="rate__movies">
-              <Rate
-                allowHalfв
-                defaultValue={0}
-                count={10}
-                onChange={() => {
-                  localStorage.setItem('stars', JSON.stringify({ id: values }));
-                }}
-              />
+              <Rate allowHalfв defaultValue={0} count={10} />
             </div>
             <li className="movies__list">
               <div className="rate__movies" />
