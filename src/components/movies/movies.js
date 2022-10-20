@@ -40,6 +40,7 @@ export default function Movies({ moviesview, loader, error }) {
       text={movies.overview}
       data={movies.release_date}
       rate={movies.vote_average}
+      genresid={movies.genre_ids}
     />
   ));
   return (

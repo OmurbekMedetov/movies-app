@@ -1,19 +1,22 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import debounce from 'lodash.debounce';
 import { Offline, Online } from 'react-detect-offline';
 import { Pagination, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import QueryMovies from '../movies-logic/movies-query';
-import Movies from '../movies';
+import Movies from '../movies/movies';
+import ErrorMovies from '../movies-logic/error-movies';
+import MoviesContext from '../movies-logic/context-movies';
+import { QueryMovies, GenresMovies, AuthenticationMovies } from '../movies-logic/movies-query';
 import './app.css';
 import 'antd/dist/antd.min.css';
-import ErrorMovies from '../movies-logic/error-movies';
 
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
       moviesview: [],
+      genresarr: [],
       loader: true,
       error: false,
       search: '',
@@ -21,10 +24,18 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    QueryMovies('return', 1)
+    QueryMovies('Naruto', 1)
       .then(({ results }) => {
         this.setState({
           moviesview: results,
+          loader: false,
+        });
+      })
+      .catch(this.onError);
+    GenresMovies()
+      .then(({ genres }) => {
+        this.setState({
+          genresarr: genres,
           loader: false,
         });
       })
@@ -58,6 +69,7 @@ export default class App extends React.Component {
 
   // eslint-disable-next-line react/no-unused-class-component-methods, consistent-return
   onLabelChange = debounce((event) => {
+    // eslint-disable-next-line react/destructuring-assignment
     if (event.target.value !== '') {
       return QueryMovies(event.target.value)
         .then(({ results }) => {
@@ -69,7 +81,7 @@ export default class App extends React.Component {
         })
         .catch(this.onError);
     }
-    return QueryMovies(event.target.value)
+    QueryMovies(event.target.value)
       .then(({ results }) => {
         this.setState({
           moviesview: results,
@@ -80,18 +92,13 @@ export default class App extends React.Component {
       .catch(this.onError);
   }, 1000);
 
-  // eslint-disable-next-line react/no-unused-class-component-methods
-  // onGenres() {
-  //   return this.moviesService
-  //     .GenresUrl()
-  //     .then(({ genres }) => {
-  //       this.setState({
-  //         moviesview: genres,
-  //         loader: false,
-  //       });
-  //     })
-  //     .catch(this.onError);
-  // }
+  // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
+  onAuthentification = () =>
+    AuthenticationMovies().then(({ guest_session_id }) => {
+      this.setState({
+        moviesview: guest_session_id,
+      });
+    });
 
   onError = () =>
     this.setState({
@@ -100,7 +107,8 @@ export default class App extends React.Component {
     });
 
   render() {
-    const { moviesview, loader, error } = this.state;
+    const { moviesview, loader, error, genresarr } = this.state;
+    console.log(genresarr);
     const antIcon = (
       <LoadingOutlined
         style={{
@@ -127,10 +135,10 @@ export default class App extends React.Component {
       <div>
         <Online>
           <div className="div__movies">
-            <button type="button" className="button__movies">
+            <button type="button" className="button__movies btn1">
               Search
             </button>
-            <button type="button" className="button__movies">
+            <button type="button" className="button__movies btn2">
               Rated
             </button>
           </div>
@@ -142,13 +150,9 @@ export default class App extends React.Component {
               onChange={this.onLabelChange}
             />
           </div>
-          <Movies
-            moviesview={moviesview}
-            loader={loader}
-            error={error}
-            pagination={this.onPagination}
-            // genres={this.onGenres}
-          />
+          <MoviesContext.Provider value={genresarr} localMovies={this.onAuthentification}>
+            <Movies moviesview={moviesview} loader={loader} error={error} />
+          </MoviesContext.Provider>
           <Pagination defaultCurrent={1} total={50} onChange={(page) => this.onPagination(page)} />
         </Online>
         <div className="offline__movies">

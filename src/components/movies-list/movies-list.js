@@ -1,34 +1,57 @@
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 import './movies-list.css';
 import PropTypes from 'prop-types';
 import { Rate } from 'antd';
 import { Online } from 'react-detect-offline';
 import lostImg from './picture.png';
 import RateMovies from './rate-movies';
+import MoviesContext from '../movies-logic/context-movies';
+import { AuthenticationMovies } from '../movies-logic/movies-query';
 
 // eslint-disable-next-line react/prop-types
-export default function MoviesList({ img, title, text, data, rate, id }) {
-  let average = rate;
-  if (average <= 3) average = 'average__3';
-  if (average > 3 && average <= 5) average = 'average__5';
-  if (average > 5 && average <= 7) average = 'average__7';
-  if (average > 7) average = 'average__max';
+export default function MoviesList({ img, rate, text, title, data, id, genresid }) {
   return (
-    <div className="movies__list--div">
-      <Online>
-        <div className="rate__movies">
-          <Rate allowHalf defaultValue={0} count={10} />
+    <MoviesContext.Consumer>
+      {(value, localMovies) => (
+        <div className="movies__list--div">
+          <Online>
+            <div className="rate__movies">
+              <Rate
+                allowHalfв
+                defaultValue={0}
+                count={10}
+                onChange={() => {
+                  localStorage.setItem('stars', JSON.stringify({ id: values }));
+                }}
+              />
+            </div>
+            <li className="movies__list">
+              <div className="rate__movies" />
+              <RateMovies rate={rate} />
+              <img
+                src={img ? `https://image.tmdb.org/t/p/original/${img}` : lostImg}
+                alt={id}
+                className="movies__img"
+              />
+              <h2 className="movies__h2">{title}</h2>
+              <div className="movies__date">{data}</div>
+              <span className="movies__button">
+                {genresid.map((item) => {
+                  // eslint-disable-next-line no-restricted-syntax
+                  for (const res of value) {
+                    if (res.id === item) {
+                      return `${res.name},\n`;
+                    }
+                  }
+                })}
+              </span>
+              <p className="movies__text">{text}</p>
+            </li>
+          </Online>
         </div>
-        <li className="movies__list">
-          <div className="rate__movies" />
-          <RateMovies rate={rate} />
-          <img src={img ? `https://image.tmdb.org/t/p/original/${img}` : lostImg} alt={id} className="movies__img" />
-          <h2 className="movies__h2">{title}</h2>
-          <div className="movies__date">{data}</div>
-          <span className="movies__button btn">Action</span>
-          <p className="movies__text">{text}</p>
-        </li>
-      </Online>
-    </div>
+      )}
+    </MoviesContext.Consumer>
   );
 }
 
@@ -38,4 +61,5 @@ MoviesList.propTypes = {
   data: PropTypes.string.isRequired,
   rate: PropTypes.number.isRequired,
   id: PropTypes.number.isRequired,
+  genresid: PropTypes.instanceOf(Array).isRequired,
 };

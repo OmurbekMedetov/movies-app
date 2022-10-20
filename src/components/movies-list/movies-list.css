@@ -30,11 +30,12 @@
     vertical-align: middle;
 }
 .movies__button {
-    width: 46px;
-    height: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 300px;
+    min-height: 20px;
     margin: 8px 12px 0 0;
-}
-.btn {
+    font-size: 12px;
     margin-left: 83px;
 }
 .movies__text {
@@ -43,7 +44,7 @@
     font-size: 12px;
     line-height: 20px;
     display: -webkit-box;
-    -webkit-line-clamp: 6;
+    -webkit-line-clamp: 5;
     -webkit-box-orient:vertical;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -142,24 +143,26 @@
         margin: 7px 0 7px 200px;
     }
     .movies__button {
-        width: 100%;
-    }
-    .btn {
+        width: 200px;
+        height: 40px;
+        display: flex;
         margin-left: 200px;
+        margin-right: 0;
+        color: gray;
     }
     .movies__text {
         font-size: 12px;
         line-height: 20px;
         width: 228px;
-        margin: 0 0 0 200px;
+        margin: 10px 0 0 200px;
         display: -webkit-box;
-        -webkit-line-clamp: 5;
+        -webkit-line-clamp: 4;
         -webkit-box-orient:vertical;
         text-overflow: ellipsis;
         overflow: hidden;
     }
     .rate__movies {
-        margin: 260px 0 0 200px;
+        margin: 280px 0 0 200px;
     }
     .average__3 {
         display: inline-flex;
