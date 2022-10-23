@@ -6,7 +6,9 @@ import { Online } from 'react-detect-offline';
 import MoviesList from '../movies-list/movies-list';
 import ErrorMovies from '../movies-logic/error-movies';
 
-export default function Movies({ moviesview, loader, error }) {
+export default function Movies({ moviesview, loader, error, onRated }) {
+  const storage = JSON.parse(localStorage.getItem('rated'));
+  console.log(storage);
   if (error) {
     return (
       <div className="error__movies">
@@ -41,6 +43,8 @@ export default function Movies({ moviesview, loader, error }) {
       data={movies.release_date}
       rate={movies.vote_average}
       genresid={movies.genre_ids}
+      onRated={onRated}
+      defaultValueStar={storage.stars[movies.id] ?? 0}
     />
   ));
   return (
@@ -56,4 +60,5 @@ Movies.propTypes = {
   moviesview: PropTypes.instanceOf(Array).isRequired,
   loader: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
+  onRated: PropTypes.func.isRequired,
 };

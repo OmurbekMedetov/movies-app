@@ -7,7 +7,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import Movies from '../movies/movies';
 import ErrorMovies from '../movies-logic/error-movies';
 import MoviesContext from '../movies-logic/context-movies';
-import { QueryMovies, GenresMovies, AuthenticationMovies } from '../movies-logic/movies-query';
+import { QueryMovies, GenresMovies } from '../movies-logic/movies-query';
 import './app.css';
 import 'antd/dist/antd.min.css';
 
@@ -20,6 +20,7 @@ export default class App extends React.Component {
       loader: true,
       error: false,
       search: '',
+      stars: {},
     };
   }
 
@@ -92,13 +93,13 @@ export default class App extends React.Component {
       .catch(this.onError);
   }, 1000);
 
-  // eslint-disable-next-line class-methods-use-this, react/no-unused-class-component-methods
-  onAuthentification = () =>
-    AuthenticationMovies().then(({ guest_session_id }) => {
-      this.setState({
-        moviesview: guest_session_id,
-      });
+  onRatedLocalStorage = (key, value) => {
+    this.setState(({ stars }) => {
+      const rated = { stars: { ...stars, [key]: value } };
+      localStorage.setItem('rated', JSON.stringify(rated));
+      return rated;
     });
+  };
 
   onError = () =>
     this.setState({
@@ -108,7 +109,6 @@ export default class App extends React.Component {
 
   render() {
     const { moviesview, loader, error, genresarr } = this.state;
-    console.log(genresarr);
     const antIcon = (
       <LoadingOutlined
         style={{
@@ -150,8 +150,8 @@ export default class App extends React.Component {
               onChange={this.onLabelChange}
             />
           </div>
-          <MoviesContext.Provider value={genresarr} localMovies={this.onAuthentification}>
-            <Movies moviesview={moviesview} loader={loader} error={error} />
+          <MoviesContext.Provider value={genresarr}>
+            <Movies moviesview={moviesview} loader={loader} error={error} onRated={this.onRatedLocalStorage} />
           </MoviesContext.Provider>
           <Pagination defaultCurrent={1} total={50} onChange={(page) => this.onPagination(page)} />
         </Online>

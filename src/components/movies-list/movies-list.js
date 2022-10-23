@@ -9,14 +9,21 @@ import RateMovies from './rate-movies';
 import MoviesContext from '../movies-logic/context-movies';
 
 // eslint-disable-next-line react/prop-types
-export default function MoviesList({ img, rate, text, title, data, id, genresid }) {
+export default function MoviesList({ img, rate, text, title, data, id, genresid, defaultValueStar, onRated }) {
   return (
     <MoviesContext.Consumer>
       {(value) => (
         <div className="movies__list--div">
           <Online>
             <div className="rate__movies">
-              <Rate allowHalfв defaultValue={0} count={10} />
+              <Rate
+                allowHalfв
+                defaultValue={defaultValueStar}
+                count={10}
+                onChange={(res) => {
+                  onRated(id, res);
+                }}
+              />
             </div>
             <li className="movies__list">
               <div className="rate__movies" />
