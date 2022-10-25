@@ -1,14 +1,12 @@
 import './movies.css';
 import PropTypes from 'prop-types';
-import { Spin } from 'antd';
+import { Spin, Tabs, Pagination } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Online } from 'react-detect-offline';
+import { Offline, Online } from 'react-detect-offline';
 import MoviesList from '../movies-list/movies-list';
 import ErrorMovies from '../movies-logic/error-movies';
 
-export default function Movies({ moviesview, loader, error, onRated }) {
-  const storage = JSON.parse(localStorage.getItem('rated'));
-  console.log(storage);
+export default function Movies({ moviesview, loader, error, rating, onPagination, onLabelChange }) {
   if (error) {
     return (
       <div className="error__movies">
@@ -32,7 +30,6 @@ export default function Movies({ moviesview, loader, error, onRated }) {
       </div>
     );
   }
-
   const element = moviesview.map((movies) => (
     <MoviesList
       key={movies.id}
@@ -43,15 +40,39 @@ export default function Movies({ moviesview, loader, error, onRated }) {
       data={movies.release_date}
       rate={movies.vote_average}
       genresid={movies.genre_ids}
-      onRated={onRated}
-      defaultValueStar={storage.stars[movies.id] ?? 0}
+    />
+  ));
+  const ratedMovies = rating.map((rated) => (
+    <MoviesList
+      key={rated.id}
+      id={rated.id}
+      img={rated.poster_path}
+      title={rated.original_title}
+      text={rated.overview}
+      data={rated.release_date}
+      rate={rated.vote_average}
+      genresid={rated.genre_ids}
     />
   ));
   return (
     <div className="swiper__movies">
       <Online>
-        <ul className="movies">{element}</ul>
+        <Tabs defaultActiveKey="1">
+          <Tabs.TabPane tab="Search" key="item-1">
+            <ul className="movies">{element}</ul>
+            <Pagination defaultCurrent={1} total={50} onChange={(page) => onPagination(page)} />
+            <div className="search__movies--div">
+              <input placeholder="Type to search..." type="text" className="search__movies" onChange={onLabelChange} />
+            </div>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Rated" key="item-2">
+            <ul className="movies">{ratedMovies}</ul>
+          </Tabs.TabPane>
+        </Tabs>
       </Online>
+      <div className="offline__movies">
+        <Offline>У вас отключен интернет, подключитесь и все заработает :D</Offline>
+      </div>
     </div>
   );
 }
@@ -60,5 +81,7 @@ Movies.propTypes = {
   moviesview: PropTypes.instanceOf(Array).isRequired,
   loader: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  onRated: PropTypes.func.isRequired,
+  rating: PropTypes.instanceOf(Array).isRequired,
+  onPagination: PropTypes.func.isRequired,
+  onLabelChange: PropTypes.func.isRequired,
 };

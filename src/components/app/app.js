@@ -1,13 +1,12 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import debounce from 'lodash.debounce';
-import { Offline, Online } from 'react-detect-offline';
-import { Pagination, Spin } from 'antd';
+import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import Movies from '../movies/movies';
 import ErrorMovies from '../movies-logic/error-movies';
 import MoviesContext from '../movies-logic/context-movies';
-import { QueryMovies, GenresMovies } from '../movies-logic/movies-query';
+import { QueryMovies, GenresMovies, AuthenticationMovies, GuestSessionMovies } from '../movies-logic/movies-query';
 import './app.css';
 import 'antd/dist/antd.min.css';
 
@@ -20,12 +19,12 @@ export default class App extends React.Component {
       loader: true,
       error: false,
       search: '',
-      stars: {},
+      rating: [],
     };
   }
 
   componentDidMount() {
-    QueryMovies('Naruto', 1)
+    QueryMovies('return', 1)
       .then(({ results }) => {
         this.setState({
           moviesview: results,
@@ -41,6 +40,17 @@ export default class App extends React.Component {
         });
       })
       .catch(this.onError);
+
+    AuthenticationMovies();
+  }
+
+  componentDidUpdate() {
+    GuestSessionMovies().then(({ results }) =>
+      this.setState({
+        rating: results,
+        loader: false,
+      })
+    );
   }
 
   // eslint-disable-next-line react/no-unused-class-component-methods
@@ -93,14 +103,6 @@ export default class App extends React.Component {
       .catch(this.onError);
   }, 1000);
 
-  onRatedLocalStorage = (key, value) => {
-    this.setState(({ stars }) => {
-      const rated = { stars: { ...stars, [key]: value } };
-      localStorage.setItem('rated', JSON.stringify(rated));
-      return rated;
-    });
-  };
-
   onError = () =>
     this.setState({
       error: true,
@@ -108,7 +110,7 @@ export default class App extends React.Component {
     });
 
   render() {
-    const { moviesview, loader, error, genresarr } = this.state;
+    const { moviesview, loader, error, genresarr, rating } = this.state;
     const antIcon = (
       <LoadingOutlined
         style={{
@@ -133,31 +135,18 @@ export default class App extends React.Component {
     }
     return (
       <div>
-        <Online>
-          <div className="div__movies">
-            <button type="button" className="button__movies btn1">
-              Search
-            </button>
-            <button type="button" className="button__movies btn2">
-              Rated
-            </button>
-          </div>
-          <div className="search__movies--div">
-            <input
-              placeholder="Type to search..."
-              type="text"
-              className="search__movies"
-              onChange={this.onLabelChange}
-            />
-          </div>
-          <MoviesContext.Provider value={genresarr}>
-            <Movies moviesview={moviesview} loader={loader} error={error} onRated={this.onRatedLocalStorage} />
-          </MoviesContext.Provider>
-          <Pagination defaultCurrent={1} total={50} onChange={(page) => this.onPagination(page)} />
-        </Online>
-        <div className="offline__movies">
-          <Offline>У вас отключен интернет, подключитесь и все заработает :D</Offline>
-        </div>
+        <MoviesContext.Provider value={genresarr}>
+          <Movies
+            moviesview={moviesview}
+            loader={loader}
+            error={error}
+            onRated={this.onRatedLocalStorage}
+            rated={this.onRatedSession}
+            rating={rating}
+            onPagination={this.onPagination}
+            onLabelChange={this.onLabelChange}
+          />
+        </MoviesContext.Provider>
       </div>
     );
   }

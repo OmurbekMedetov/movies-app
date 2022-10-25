@@ -8,7 +8,7 @@ export default function RateMovies({ rate }) {
   if (average > 7) average = 'average__max';
   return (
     <div>
-      <div className={average}>{rate}</div>
+      <div className={average}>{Math.floor(rate)}</div>
     </div>
   );
 }
