@@ -25,7 +25,6 @@ export async function GuestSessionMovies() {
     `https://api.themoviedb.org/3/guest_session/${local}/rated/movies?api_key=1099c181e74cb0c4caa82a328c7407ab&language=en-US&sort_by=created_at.asc`
   );
   const res = await fetchUrl.json();
-  console.log(res);
   return res;
 }
 
@@ -47,7 +46,6 @@ export async function PostQuest(id, rating) {
     throw new Error(`Неправильный url от сервера ${fetchUrl.status}`);
   }
   const res = await fetchUrl.json();
-  console.log(res);
   return res;
 }
 

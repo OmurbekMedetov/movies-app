@@ -40,6 +40,7 @@ export default function Movies({ moviesview, loader, error, rating, onPagination
       data={movies.release_date}
       rate={movies.vote_average}
       genresid={movies.genre_ids}
+      rating={movies.rated}
     />
   ));
   const ratedMovies = rating.map((rated) => (
@@ -52,12 +53,13 @@ export default function Movies({ moviesview, loader, error, rating, onPagination
       data={rated.release_date}
       rate={rated.vote_average}
       genresid={rated.genre_ids}
+      rating={rated.rating}
     />
   ));
   return (
     <div className="swiper__movies">
       <Online>
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="1" destroyInactiveTabPane>
           <Tabs.TabPane tab="Search" key="item-1">
             <ul className="movies">{element}</ul>
             <Pagination defaultCurrent={1} total={50} onChange={(page) => onPagination(page)} />

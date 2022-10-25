@@ -9,7 +9,7 @@ import MoviesContext from '../movies-logic/context-movies';
 import { PostQuest } from '../movies-logic/movies-query';
 
 // eslint-disable-next-line react/prop-types
-export default function MoviesList({ img, rate, text, title, data, id, genresid }) {
+export default function MoviesList({ img, rate, text, title, data, id, genresid, rating }) {
   return (
     <MoviesContext.Consumer>
       {(value) => (
@@ -17,7 +17,7 @@ export default function MoviesList({ img, rate, text, title, data, id, genresid 
           <div className="rate__movies">
             <Rate
               allowHalfв
-              defaultValue={0}
+              defaultValue={rating}
               count={10}
               onChange={(res) => {
                 PostQuest(id, res);
