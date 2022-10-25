@@ -5,6 +5,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Offline, Online } from 'react-detect-offline';
 import MoviesList from '../movies-list/movies-list';
 import ErrorMovies from '../movies-logic/error-movies';
+import { GuestSessionMovies } from '../movies-logic/movies-query';
 
 export default function Movies({ moviesview, loader, error, rating, onPagination, onLabelChange }) {
   if (error) {
@@ -40,7 +41,6 @@ export default function Movies({ moviesview, loader, error, rating, onPagination
       data={movies.release_date}
       rate={movies.vote_average}
       genresid={movies.genre_ids}
-      rating={movies.rated}
     />
   ));
   const ratedMovies = rating.map((rated) => (
@@ -59,15 +59,21 @@ export default function Movies({ moviesview, loader, error, rating, onPagination
   return (
     <div className="swiper__movies">
       <Online>
-        <Tabs defaultActiveKey="1" destroyInactiveTabPane>
-          <Tabs.TabPane tab="Search" key="item-1">
+        <Tabs defaultActiveKey="1">
+          onChange=
+          {(event) => {
+            if (event === 2) {
+              GuestSessionMovies();
+            }
+          }}
+          <Tabs.TabPane tab="Search" key="1">
             <ul className="movies">{element}</ul>
             <Pagination defaultCurrent={1} total={50} onChange={(page) => onPagination(page)} />
             <div className="search__movies--div">
               <input placeholder="Type to search..." type="text" className="search__movies" onChange={onLabelChange} />
             </div>
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Rated" key="item-2">
+          <Tabs.TabPane tab="Rated" key="2">
             <ul className="movies">{ratedMovies}</ul>
           </Tabs.TabPane>
         </Tabs>
