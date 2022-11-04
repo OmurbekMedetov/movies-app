@@ -60,12 +60,6 @@ export default function Movies({ moviesview, loader, error, rating, onPagination
     <div className="swiper__movies">
       <Online>
         <Tabs defaultActiveKey="1">
-          onChange=
-          {(event) => {
-            if (event === 2) {
-              GuestSessionMovies();
-            }
-          }}
           <Tabs.TabPane tab="Search" key="1">
             <ul className="movies">{element}</ul>
             <Pagination defaultCurrent={1} total={50} onChange={(page) => onPagination(page)} />
